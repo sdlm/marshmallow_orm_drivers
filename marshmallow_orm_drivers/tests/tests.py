@@ -1,17 +1,21 @@
-# todo: write a lot of tests for each ORM!
+from unittest import TestCase
 
-# interface for DB
+from faker import Faker
 
-# basic test
 
-# test fk
+class SchemaTests(TestCase):
+    user_schema = None
 
-# test reverse fk
+    # noinspection PyUnresolvedReferences
+    def setUp(self):
+        model_user = self.get_model('user')
+        self.user_qs = self.qs(model_user)
 
-# test m2m
+        user_schema_cls = self.get_schema('user')
+        self.user_schema = user_schema_cls()
 
-# test reverse m2m
-
-# test unique
-
-# test several unique
+    def test_basic(self):
+        fake = Faker()
+        name = fake.user_name()
+        self.user_schema.load(data={'name': name})
+        self.assertTrue(self.user_qs.exists(username=name))

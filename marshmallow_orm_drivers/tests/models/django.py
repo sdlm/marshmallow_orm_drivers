@@ -31,3 +31,13 @@ class Post(models.Model):
 
     def __str__(self):
         return f'(Post: id={self.pk}, title={self.short_title})'
+
+
+def get_model(model_name: str):
+    assert model_name in ['user', 'tag', 'post']
+    switch = {
+        'user': User,
+        'tag': Tag,
+        'post': Post,
+    }
+    return switch[model_name]

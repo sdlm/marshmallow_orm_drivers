@@ -3,6 +3,7 @@ from pony.orm import *
 
 
 db = Database()
+db.bind(provider='sqlite', filename=':memory:', create_db=True)
 
 
 class User(db.Entity):
@@ -28,4 +29,14 @@ class Post(db.Entity):
     created = Optional(datetime)
 
 
-db.generate_mapping()
+db.generate_mapping(create_tables=True)
+
+
+def get_model(model_name: str):
+    assert model_name in ['user', 'tag', 'post']
+    switch = {
+        'user': User,
+        'tag': Tag,
+        'post': Post,
+    }
+    return switch[model_name]
