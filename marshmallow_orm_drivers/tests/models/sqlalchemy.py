@@ -34,13 +34,13 @@ class Post(Base):
     title = Column(String(512))
     text = Column(Text())
 
-    author_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    author = Column(Integer, ForeignKey('user.id'), primary_key=True)
 
     tags = relationship('Tag', secondary=association_table)
 
     url = Column(String(512), unique=True)
-    hash = Column(String(512), unique=True)
-    created = Column(DateTime())
+    hash = Column(String(512), unique=True, nullable=True)
+    created = Column(DateTime(), nullable=True)
 
 
 Session = sessionmaker(engine)

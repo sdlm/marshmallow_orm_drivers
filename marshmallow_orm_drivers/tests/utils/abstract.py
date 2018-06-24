@@ -22,3 +22,7 @@ class MyQuerySet(abc.ABC):
     @abc.abstractmethod
     def create(self, **kwargs):
         pass
+
+    @abc.abstractmethod
+    def values_of_field(self, field_name):
+        pass

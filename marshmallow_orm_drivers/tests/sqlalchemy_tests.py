@@ -4,7 +4,7 @@ from marshmallow_orm_drivers.tests.tests import SchemaTests
 from marshmallow_orm_drivers.tests.utils.sqlalchemy import SQLAlchemyQuerySet
 
 
-class PonySchemaTests(SchemaTests):
+class SQLAlchemySchemaTests(SchemaTests):
 
     def setUp(self):
         self.get_schema = get_schema

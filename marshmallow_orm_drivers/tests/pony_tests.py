@@ -1,3 +1,5 @@
+from pony.orm import db_session
+
 from marshmallow_orm_drivers.tests.models.pony import get_model
 from marshmallow_orm_drivers.tests.serializers.pony import get_schema
 from marshmallow_orm_drivers.tests.tests import SchemaTests
@@ -11,3 +13,11 @@ class PonySchemaTests(SchemaTests):
         self.qs = PonyQuerySet
         self.get_model = get_model
         super().setUp()
+
+    @db_session
+    def load_entry(self, entry):
+        self.post_schema.load(entry)
+
+    @db_session
+    def load_user(self, data):
+        self.user_schema.load(data)

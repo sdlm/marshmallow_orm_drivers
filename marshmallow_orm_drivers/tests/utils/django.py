@@ -4,16 +4,20 @@ from marshmallow_orm_drivers.tests.utils.abstract import MyQuerySet
 
 class DjangoQuerySet(MyQuerySet):
 
-    get_model_by_name = get_model
+    def get_qs(self, **kwargs):
+        return self.model.objects.filter(**kwargs)
 
     def get(self, **kwargs):
-        return self.model.objects.get(**kwargs)
+        return self.get_qs(**kwargs).first()
 
     def exists(self, **kwargs):
-        return self.model.objects.filter(**kwargs).exists()
+        return self.get_qs(**kwargs).exists()
 
     def count(self, **kwargs):
-        return self.model.objects.filter(**kwargs).count()
+        return self.get_qs(**kwargs).count()
 
     def create(self, **kwargs):
         return self.model.objects.create(**kwargs)
+
+    def values_of_field(self, field_name):
+        return list(self.model.objects.values_list(field_name, flat=True))

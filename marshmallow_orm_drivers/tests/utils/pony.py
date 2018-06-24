@@ -1,4 +1,4 @@
-from pony.orm import db_session, commit, count, exists
+from pony.orm import db_session, commit, count, exists, select
 
 from marshmallow_orm_drivers.tests.utils.abstract import MyQuerySet
 
@@ -21,3 +21,7 @@ class PonyQuerySet(MyQuerySet):
     def create(self, **kwargs):
         self.model(**kwargs)
         commit()
+
+    @db_session
+    def values_of_field(self, field_name):
+        return list(select(getattr(o, field_name) for o in self.model))

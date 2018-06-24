@@ -1,5 +1,7 @@
 from marshmallow import Schema, SchemaOpts, post_load
+from pony.orm import db_session, commit
 
+from marshmallow_orm_drivers.tests.models.sqlalchemy import session
 from .classes import DjangoModelHelper
 from .exceptions import InconsistentDataError
 
@@ -50,7 +52,13 @@ class SQLAlchemyModelSchema(Schema):
 
     @post_load
     def make_object(self, data):
-        ...
+        model = self.opts.model
+
+        instance = model(**data)
+        session.add(instance)
+        session.commit()
+
+        return instance.id
 
 
 class PeeweeModelSchema(Schema):
@@ -66,4 +74,8 @@ class PonyModelSchema(Schema):
 
     @post_load
     def make_object(self, data):
-        ...
+        model = self.opts.model
+
+        instance = model(**data)
+        commit()
+        return instance
